@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+int main() {
+    FILE *source_file, *dest_file;
+    char buffer[1024];
+    int num_read;
+
+    // open the source file in read mode
+    source_file = fopen("source_file.txt", "rb");
+    if (source_file == NULL) {
+        printf("Error opening source file\n");
+        return 1;
+    }
+
+    // open the destination file in write mode
+    dest_file = fopen("dest_file.txt", "wb");
+    if (dest_file == NULL) {
+        printf("Error opening destination file\n");
+        fclose(source_file);
+        return 1;
+    }
+
+    // read from source and write to destination
+    while ((num_read = fread(buffer, 1, sizeof(buffer), source_file)) > 0) {
+        fwrite(buffer, 1, num_read, dest_file);
+    }
+
+    // close the files
+    fclose(source_file);
+    fclose(dest_file);
+
+    return 0;
+}
